@@ -1,0 +1,19 @@
+- name: ensure terraform folder exists
+  file:
+    state: directory
+    path: "{{ iaas_tf_dir }}/libvirt"
+- name: ensure terraform folder exists
+  file:
+    state: directory
+    path: "{{ iaas_tf_dir }}"
+- name: "generate configuration from template"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ iaas_tf_dir }}/libvirt/{{ item }}"
+  with_items:
+    - tf_libvirt_variables.tf
+    - tf_libvirt_vms.tf
+    - tf_libvirt_outputs.tf
+    - tf_libvirt_provider.tf
+    - tf_libvirt_networks.tf
+    - tf_libvirt_disks.tf

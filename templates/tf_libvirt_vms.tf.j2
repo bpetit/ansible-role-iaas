@@ -1,0 +1,37 @@
+{% if iaas_tf_libvirt.vms is defined %}
+{% for vm_name, vm_data in iaas_tf_libvirt.vms.items() %}
+resource "libvirt_domain" "{{ vm_name }}" {
+    name = "{{ vm_name }}"
+    memory = {{ vm_data.memory | default(512) }}
+    vcpu = {{ vm_data.vcpu | default(1) }}
+    {% if vm_data.disks is defined %}
+    {% for disk in vm_data.disks %}
+    disk {
+        volume_id = "${libvirt_volume.{{ disk }}.id}"
+    }
+    {% endfor %}
+    {% endif %}
+    {% if vm_data.network_interfaces is defined %}
+    {% for netif in vm_data.network_interfaces %}
+    network_interface {
+        network_id = "${libvirt_network.{{ netif.network_name }}.id}"
+        hostname = "{{ netif.hostname }}"
+        addresses = [
+        {% if netif.addresses is defined %}
+        {% for addr in netif.addresses %}
+        "{{ addr }}"
+        {% endfor %}
+        {% endif %}
+        ]
+    }
+    {% endfor %}
+    {% endif %}
+    console {
+        type = "pty"
+        target_port = "0"
+        target_type = "serial"
+        source_path = "/dev/pts/4"
+    }
+}
+{% endfor %}
+{% endif %}

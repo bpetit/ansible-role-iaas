@@ -1,0 +1,30 @@
+- name: ensure terraform folder exists
+  file:
+    state: directory
+    path: "{{ iaas_tf_dir }}/aws"
+- name: get current ipv4 client address
+  shell: curl http://api.ipify.org # http://ifconfig.io
+  register: myip
+  when: iaas_tf_ipv4_admin is not defined
+- name: fill security groups with local public ipv4 ip
+  set_fact:
+    iaas_tf_ipv4_admin: "{{ iaas_tf_ipv4_admin|default([]) + [{ 'ip': myip.stdout, 'netmask': '32' }] }}"
+
+- name: "generate configuration from template"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ iaas_tf_dir }}/{{ item }}"
+  with_items:
+    - tf_aws_variables.tf
+    - tf_aws_instances.tf
+    - tf_aws_outputs.tf
+    - tf_aws_ssh.tf
+    - tf_aws_provider.tf
+    - tf_aws_security_groups.tf
+    - tf_aws_data.tf
+- name: perform terraform init for provider installation
+  shell: terraform init
+  chdir: "{{ iaas_tf_dir }}"
+  register: result
+- debug:
+    var: result

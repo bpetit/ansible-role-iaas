@@ -1,0 +1,8 @@
+{% if iaas_tf_libvirt.disks is defined %}
+{% for disk_name, disk_data in iaas_tf_libvirt.disks.items() %}
+resource "libvirt_volume" "{{ disk_name }}" {
+    name = "{{ disk_name }}"
+    source = "{{ disk_data.source }}"
+}
+{% endfor %}
+{% endif %}

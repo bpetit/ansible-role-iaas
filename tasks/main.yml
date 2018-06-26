@@ -1,0 +1,38 @@
+---
+# tasks file for ansible-role-iaas
+
+### Install terraform ###
+
+- name: perform install terraform
+  include_tasks: tf_install.yml
+  when: iaas_tf_install is defined and iaas_tf_install
+
+### Generate terraform configuration ###
+
+- name: perform basic terraform configuration generation
+  include_tasks: tf_common_generate.yml
+  tags: aws libvirt
+
+- name: perform terraform configuration generation for aws
+  include_tasks: tf_aws_generate.yml
+  when: iaas_tf_aws is defined
+  tags: aws
+
+- name: perform terraform configuration generation for libvirt
+  include_tasks: tf_libvirt_generate.yml
+  when: iaas_tf_libvirt is defined
+  tags: libvirt
+
+### Create virtual machines images ###
+
+### Deploy infrstructure resources ###
+
+- name: perform terraform deployment on AWS
+  include_tasks: tf_aws_apply.yml
+  when: iaas_tf_aws is defined
+  tags: aws
+
+- name: perform terraform deployment on Libvirt
+  include_tasks: tf_libvirt_apply.yml
+  when: iaas_tf_libvirt is defined
+  tags: libvirt

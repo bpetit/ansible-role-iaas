@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-role-iaas
+
+iaas_tf_install: no
+iaas_tf_dir: terraform

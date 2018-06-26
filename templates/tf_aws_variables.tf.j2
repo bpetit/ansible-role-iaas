@@ -1,0 +1,12 @@
+{% if iaas_tf_ipv4_admin is defined %}
+variable "ipv4_admin" {
+default = [
+{% for ip in iaas_tf_ipv4_admin %}
+"{{ ip.ip }}/{{ ip.netmask }}"
+{% if loop.index + 1 < loop.length - 1 %}
+,
+{% endif %}
+{% endfor %}
+]
+}
+{% endif %}

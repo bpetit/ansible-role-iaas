@@ -1,0 +1,19 @@
+{% if iaas_tf_aws.vms is defined %}
+{% for instance_name, instance_data in iaas_tf_aws.vms.items() %}
+    resource "aws_instance" "{{ instance_name }}" {
+        ami = "{{ instance_data.ami | default('ami-41e80526') }}"
+        instance_type = "{{ instance_data.size | default('t2.micro') }}"
+
+        tags {
+            Name = "{{ instance_name }}"
+        }
+
+        vpc_security_group_ids = [
+            "${aws_security_group.allow_admin_ssh.id}",
+            "${aws_security_group.allow_admin_http.id}"
+        ]
+
+        key_name = "{{ instance_data.pkey }}"
+    }
+{% endfor %}
+{% endif %}

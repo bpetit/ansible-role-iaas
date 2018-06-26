@@ -1,0 +1,8 @@
+{% if iaas_tf_aws.ssh_keys is defined %}
+{% for key_name, pkey in iaas_tf_aws.ssh_keys.items() %}
+	resource "aws_key_pair" "{{ key_name }}" {
+	  key_name   = "{{ key_name }}"
+	  public_key = "{{ pkey }}"
+	}
+{% endfor %}
+{% endif %}

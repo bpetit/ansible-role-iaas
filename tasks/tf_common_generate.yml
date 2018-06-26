@@ -1,0 +1,4 @@
+- name: ensure terraform folder exists
+  file:
+    state: directory
+    path: "{{ iaas_tf_dir }}"
