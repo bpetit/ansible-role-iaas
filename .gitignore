@@ -1,5 +1,4 @@
 *.sw*
 *.retry
-tests/host_vars/*
 tests/group_vars/*
 tests/terraform
