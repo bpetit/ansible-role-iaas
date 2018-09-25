@@ -6,6 +6,7 @@
 - name: perform install terraform
   include_tasks: tf_install.yml
   when: iaas_tf_install is defined and iaas_tf_install
+  tags: aws libvirt
 
 ### Generate terraform configuration ###
 
