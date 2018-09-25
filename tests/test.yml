@@ -1,5 +1,6 @@
----
 - hosts: localhost
-  remote_user: root
+  connection: local
+  vars:
+    iaas_tf_force_init: yes
   roles:
-    - ansible-role-iaas
+    - role: ../..

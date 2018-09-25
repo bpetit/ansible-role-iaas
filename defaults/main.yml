@@ -3,3 +3,4 @@
 
 iaas_tf_install: no
 iaas_tf_dir: terraform
+iaas_tf_force_init: no

@@ -15,7 +15,7 @@ resource "libvirt_domain" "{{ vm_name }}" {
     {% for netif in vm_data.network_interfaces %}
     network_interface {
         network_id = "${libvirt_network.{{ netif.network_name }}.id}"
-        hostname = "{{ netif.hostname }}"
+        hostname = "{{ netif.hostname | default(vm_name) }}"
         addresses = [
         {% if netif.addresses is defined %}
         {% for addr in netif.addresses %}

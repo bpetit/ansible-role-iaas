@@ -2,7 +2,7 @@
 {% for net_name, net_data in iaas_tf_libvirt.networks.items() %}
 resource "libvirt_network" "{{ net_name }}" {
     name = "{{ net_name }}"
-    mode = "{{ net_data.mode | default (nat) }}"
+    mode = "{{ net_data.mode | default ('nat') }}"
     domain = "{{ net_data.domain | default('example.local') }}"
     {% if net_data.addresses is defined %}
     addresses = [

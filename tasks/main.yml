@@ -25,7 +25,7 @@
 
 ### Create virtual machines images ###
 
-### Deploy infrstructure resources ###
+### Deploy infrastructure resources ###
 
 - name: perform terraform deployment on AWS
   include_tasks: tf_aws_apply.yml
