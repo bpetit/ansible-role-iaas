@@ -2,3 +2,4 @@
   get_url:
     url: "https://releases.hashicorp.com/terraform/{{ iaas_tf_version | default('0.11.7') }}/terraform_{{ iaas_tf_version | default('0.11.7') }}_linux_amd64.zip"
     dest: "{{ ansible_tf_install_dir | default('/usr/local/bin') }}/terraform"
+  tags: aws,libvirt

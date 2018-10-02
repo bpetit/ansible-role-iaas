@@ -2,3 +2,4 @@
   file:
     state: directory
     path: "{{ iaas_tf_dir }}"
+  tags: aws,libvirt

@@ -3,3 +3,4 @@
     project_path: "{{ iaas_tf_dir }}/aws/"
     state: "{{ tf_action | default('present') }}"
   register: result
+  tags: aws
