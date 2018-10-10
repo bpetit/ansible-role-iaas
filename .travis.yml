@@ -5,4 +5,4 @@ before_install:
   - pip install ansible==2.6.1
 
 script:
-  - ansible-playbook -t aws -i tests/inventory tests/test.yml
+  - sudo ansible-playbook -t aws -i tests/inventory tests/test.yml
