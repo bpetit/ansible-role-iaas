@@ -4,3 +4,7 @@
     state: "{{ tf_action | default('present') }}"
   register: result
   tags: aws
+- name: result of terraform run
+  debug:
+    var: "result.stdout_lines"
+  tags: aws

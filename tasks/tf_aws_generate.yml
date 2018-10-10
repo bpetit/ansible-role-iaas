@@ -12,6 +12,8 @@
   set_fact:
     iaas_tf_ipv4_admin: "{{ iaas_tf_ipv4_admin|default([]) + [{ 'ip': myip.stdout, 'netmask': '32' }] }}"
   tags: aws
+- debug: var=ansible_env
+  tags: aws
 - name: "generate configuration from template"
   template:
     src: "{{ item }}.j2"
@@ -24,6 +26,7 @@
     - tf_aws_provider.tf
     - tf_aws_security_groups.tf
     - tf_aws_data.tf
+    - tf_aws_iam.tf
   tags: aws
 - name: perform terraform init for provider installation
   shell: cd "{{ iaas_tf_dir }}/aws/" && terraform init

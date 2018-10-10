@@ -35,8 +35,6 @@ BSD
 Todo
 ----
 
-- automate terraform init and providers installation
-
 Author Information
 ------------------
 

@@ -2,10 +2,7 @@
 output "aws_dns" {
 	value = [
 {% for instance_name in iaas_tf_aws.vms %}
-	"${aws_instance.{{ instance_name }}.public_dns}"
-	{% if loop.index + 1 < loop.length - 1 %}
-	,
-	{% endif %}
+	"${aws_instance.{{ instance_name }}.public_dns}",
 {% endfor %}
 ]
 }

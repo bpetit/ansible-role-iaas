@@ -1,0 +1,23 @@
+{% if iaas_tf_aws.iam.users is defined %}
+{% for user, user_data in iaas_tf_aws.iam.users.items() %}
+resource "aws_iam_user" "{{ user }}" {
+  name = "{{ user_data.name }}"
+  path = "{{ user_data.path | default(iaas_tf_aws_iam_user_path) }}"
+}
+resource "aws_iam_access_key" "{{ user }}" {
+  user = "${aws_iam_user.{{ user }}.name}"
+}
+{% if user_data.policies is defined %}
+{% for pol, pol_data in user_data.policies.items() %}
+resource "aws_iam_user_policy" "{{ pol }}" {
+  name = "{{ pol_data.name }}"
+  user = "${aws_iam_user.{{ user }}.name}"
+
+  policy = <<EOF
+{{ lookup('file', pol_data.file) }}
+EOF
+}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
