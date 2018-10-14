@@ -33,6 +33,3 @@
   chdir: "{{ iaas_tf_dir }}/aws/"
   register: result
   tags: aws
-- debug:
-    var: result
-  tags: aws

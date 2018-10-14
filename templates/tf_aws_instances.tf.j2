@@ -9,10 +9,13 @@
             Name = "{{ instance_name }}"
         }
 
+{% if instance_data.security_groups is defined %}
         vpc_security_group_ids = [
-            "${aws_security_group.allow_admin_ssh.id}",
-            "${aws_security_group.allow_admin_http.id}"
+{% for sg in instance_data.security_groups %}
+            "${aws_security_group.{{ sg }}.id}",
+{% endfor %}
         ]
+{% endif %}
 
         key_name = "{{ instance_data.pkey }}"
     }

@@ -1,29 +1,37 @@
-resource "aws_security_group" "allow_admin_ssh" {
-    name = "allow_admin_ssh"
-    vpc_id = "${data.aws_vpc.main.id}"
+{% if iaas_tf_aws.security_groups is defined %}
+{% for sg, sg_data in iaas_tf_aws.security_groups.items() %}
+resource "aws_security_group" "{{ sg }}" {
+	name = "{{ sg }}"
+	vpc_id = "${data.aws_vpc.{{ sg_data.vpc }}.id}"
 
-    ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["${var.ipv4_admin}"]
-    }
-
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = [ "0.0.0.0/0" ]
-    }
+{% if sg_data.ingress is defined %}
+	ingress {
+        from_port = {{ sg_data.ingress.from_port | default('0') }}
+		to_port = {{ sg_data.ingress.to_port | default('65335') }}
+        protocol = "{{ sg_data.ingress.protocol | default('all') }}"
+{% if sg_data.ingress.cidr_blocks is defined %}
+		cidr_blocks = [
+{% for block in sg_data.ingress.cidr_blocks %}
+			"{{ block }}",
+{% endfor %}
+		]
+{% endif %}
+	}
+{% endif %}
+{% if sg_data.egress is defined %}
+	egress {
+		from_port = {{ sg_data.egress.from_port | default('0') }}
+        to_port = {{ sg_data.egress.to_port | default('65335') }}
+        protocol = "{{ sg_data.egress.protocol | default('all') }}"
+{% if sg_data.egress.cidr_blocks is defined %}
+		cidr_blocks = [
+{% for block in sg_data.egress.cidr_blocks %}
+			"{{ block }}",
+{% endfor %}
+		]
+{% endif %}
+	}
+{% endif %}
 }
-resource "aws_security_group" "allow_admin_http" {
-    name = "allow_admin_http"
-    vpc_id = "${data.aws_vpc.main.id}"
-
-    ingress {
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["${var.ipv4_admin}"]
-    }
-}
+{% endfor %}
+{% endif %}

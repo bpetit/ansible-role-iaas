@@ -1,12 +1,15 @@
+{% if iaas_tf_aws.iam is defined %}
 {% if iaas_tf_aws.iam.users is defined %}
 {% for user, user_data in iaas_tf_aws.iam.users.items() %}
 resource "aws_iam_user" "{{ user }}" {
   name = "{{ user_data.name }}"
   path = "{{ user_data.path | default(iaas_tf_aws_iam_user_path) }}"
 }
+{% if user_data.access_key is defined and user_data.access_key %}
 resource "aws_iam_access_key" "{{ user }}" {
   user = "${aws_iam_user.{{ user }}.name}"
 }
+{% endif %}
 {% if user_data.policies is defined %}
 {% for pol, pol_data in user_data.policies.items() %}
 resource "aws_iam_user_policy" "{{ pol }}" {
@@ -19,5 +22,17 @@ EOF
 }
 {% endfor %}
 {% endif %}
+{% if user_data.policy_attachments is defined %}
+{% for pat, pat_data in user_data.policy_attachments.items() %}
+data "aws_iam_policy" "{{ pat }}" {
+  arn = "{{ pat_data.arn }}"
+}
+resource "aws_iam_user_policy_attachment" "{{ pat }}"{
+	user = "${aws_iam_user.{{ user }}.name}"
+	policy_arn = "${data.aws_iam_policy.{{ pat }}.arn}"
+}
 {% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endif %}

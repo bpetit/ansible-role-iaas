@@ -7,3 +7,17 @@ output "aws_dns" {
 ]
 }
 {% endif %}
+{% if iaas_tf_aws.iam is defined %}
+{% if iaas_tf_aws.iam.users is defined %}
+{% for user, user_data in iaas_tf_aws.iam.users.items() %}
+{% if user_data.access_key is defined and user_data.access_key %}
+output "aws_iam_user_access_key_{{ user }}" {
+    value = "${aws_iam_access_key.{{ user }}.id}"
+}
+output "aws_iam_user_access_key_{{ user }}_secret" {
+    value = "${aws_iam_access_key.{{ user }}.secret}"
+}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}

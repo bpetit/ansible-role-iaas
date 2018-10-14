@@ -1,4 +1,8 @@
 *.sw*
 *.retry
 tests/group_vars/*
+tests/host_vars/*
 tests/terraform
+tests/inventory.yml
+tests/files*
+tests/vars*
