@@ -1,12 +1,36 @@
 ---
 # tasks file for ansible-role-iaas
 
+### Install Packer ###
+
+- name: perform packer installation
+  import_tasks: pk_install.yml
+  when: iaas_pk_install is defined and iaas_pk_install
+  tags: aws, libvirt
+
 ### Install terraform ###
 
-- name: perform install terraform
+- name: perform terraform installation
   include_tasks: tf_install.yml
   when: iaas_tf_install is defined and iaas_tf_install
   tags: aws,libvirt
+
+### Generate packer configuration ###
+
+- name: perform basic packer configuration generation
+  import_tasks: pk_common_generate.yml
+  tags: aws, libvirt
+
+- name: perform packer configuration generation for aws
+  import_tasks: pk_aws_generate.yml
+  tags: aws
+
+### Create virtual machines images ###
+
+- name: perform packer image creation on AWS
+  import_tasks: pk_aws_apply.yml
+  when: iaas_pk_aws is defined
+  tags: aws
 
 ### Generate terraform configuration ###
 
@@ -24,7 +48,6 @@
   when: iaas_tf_libvirt is defined
   tags: libvirt
 
-### Create virtual machines images ###
 
 ### Deploy infrastructure resources ###
 

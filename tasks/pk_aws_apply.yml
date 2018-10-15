@@ -1,0 +1,10 @@
+- name: apply packer configuration
+  shell: packer build pk_aws_ami.json
+  args:
+    chdir: "{{ iaas_pk_dir }}/aws"
+  register: result
+  ignore_errors: True
+- set_fact:
+    pk_aws_debian_9_ami: "{{ lookup('file', iaas_pk_dir+'/aws/manifest.json') | from_json | json_query('builds[-1].artifact_id') }}"
+- debug:
+    msg: "{{ pk_aws_debian_9_ami.split(':')[1] }}"

@@ -1,0 +1,27 @@
+{% if iaas_pk_aws is defined %}
+{
+"builders": [
+{% if iaas_pk_aws.ebs is defined %}
+{% for ami, ami_data in iaas_pk_aws.ebs.items() %}
+{
+  "type": "amazon-ebs",
+  "access_key": "{{ ansible_env.AWS_ACCESS_KEY | default(iaas_aws_access_key) }}",
+  "secret_key": "{{ ansible_env.AWS_SECRET_KEY | default(iaas_aws_secret_key) }}",
+  "region": "{{ iaas_aws_region | default('eu-west-2') }}",
+  "source_ami": "{{ ami_data.source_ami | default('ami-0d9ba70fd9e495233') }}",
+  "instance_type": "t2.micro",
+  "ssh_username": "admin",
+  "ami_name": "{{ ami }}"
+}
+{% endfor %}
+{% endif %}
+],
+"post-processors": [
+  {
+    "type": "manifest",
+    "output": "manifest.json",
+    "strip_path": true
+  }
+]
+}
+{% endif %}

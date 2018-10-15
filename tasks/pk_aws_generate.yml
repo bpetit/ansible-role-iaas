@@ -1,0 +1,8 @@
+- name: ensutre packer folder exists
+  file:
+    state: directory
+    path: "{{ iaas_pk_dir }}/aws/"
+- name: generate packer configuration
+  template:
+    src: "pk_aws_ami.json.j2"
+    dest: "{{ iaas_pk_dir }}/aws/pk_aws_ami.json"

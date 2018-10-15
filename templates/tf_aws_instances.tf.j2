@@ -2,7 +2,11 @@
 # iaas_tf_aws
 {% for instance_name, instance_data in iaas_tf_aws.vms.items() %}
     resource "aws_instance" "{{ instance_name }}" {
+{% if instance_data.custom_ami is defined %}
+        ami = "{{ lookup('vars', 'pk_aws_'+instance_data.custom_ami+'_ami').split(':')[1] | default('ami-41e80526') }}"
+{% else %}
         ami = "{{ instance_data.ami | default('ami-41e80526') }}"
+{% endif %}
         instance_type = "{{ instance_data.size | default('t2.micro') }}"
 
         tags {

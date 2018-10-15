@@ -18,11 +18,11 @@ variable "aws_access_key" {
 variable "aws_secret_key" {
 	default = "{{ ansible_env.AWS_SECRET_KEY }}"
 }
-{% elif iaas_tf_aws_access_key is defined and iaas_tf_aws_secret_key is defined %}
+{% elif iaas_aws_access_key is defined and iaas_aws_secret_key is defined %}
 variable "aws_access_key" {
-	default = "{{ iaas_tf_aws_access_key }}"
+	default = "{{ iaas_aws_access_key }}"
 }
 variable "aws_secret_key" {
-	default = "{{ iaas_tf_aws_secret_key }}"
+	default = "{{ iaas_aws_secret_key }}"
 }
 {% endif %}
