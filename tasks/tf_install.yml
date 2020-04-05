@@ -1,4 +1,14 @@
 - name: get the required terraform version
   get_url:
-    url: "https://releases.hashicorp.com/terraform/{{ iaas_tf_version | default('0.11.7') }}/terraform_{{ iaas_tf_version | default('0.11.7') }}_linux_amd64.zip"
+    url: "https://releases.hashicorp.com/terraform/{{ iaas_tf_version | default('0.12.24') }}/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
+    dest: "/tmp/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
+
+- name: unarchive
+  unarchive:
+    src: "/tmp/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
+    dest: "/tmp/"
+
+- name: install
+  copy:
+    src: "/tmp/terraform"
     dest: "{{ ansible_tf_install_dir | default('/usr/local/bin') }}/terraform"
