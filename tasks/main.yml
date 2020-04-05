@@ -3,9 +3,13 @@
 
 ### Install terraform ###
 
-- name: perform install terraform
+- name: Terraform is installed
   include_tasks: tf_install.yml
   when: iaas_tf_install is defined and iaas_tf_install
+
+- name: Libvirt terraform provider is installed
+  include_tasks: tf_libvirt_provider_install.yaml
+  when: iaas_tf_libvirt_provider_install is defined and iaas_tf_libvirt_provider_install
 
 ### Generate terraform configuration ###
 

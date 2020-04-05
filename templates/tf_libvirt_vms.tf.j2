@@ -30,7 +30,6 @@ resource "libvirt_domain" "{{ vm_name }}" {
         type = "pty"
         target_port = "0"
         target_type = "serial"
-        source_path = "/dev/pts/4"
     }
 }
 {% endfor %}

@@ -4,3 +4,6 @@
 iaas_tf_install: no
 iaas_tf_dir: terraform
 iaas_tf_force_init: no
+iaas_tf_libvirt_provider_install: no
+iaas_tf_libvirt_provider_version: "0.6.2"
+iaas_tf_libvirt_provider_url: "https://github.com/dmacvicar/terraform-provider-libvirt/releases/download/"
