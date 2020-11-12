@@ -1,6 +1,8 @@
 IAAS
 ====
 
+**WARNING**: I don't actively maintain this role. May be buggy. Consider it as an experimentation rather than a ready to go tool.
+
 This role provider multiple infrastructure deployment and provisioning on multiple platforms/cloud providers. It is based on [Terraform](https://terraform.io) and Ansible templates.
 
 Requirements
@@ -40,4 +42,4 @@ Todo
 Author Information
 ------------------
 
-Benoit Petit <bpetit@b0rk.in> (https://arawbase.com)
+Benoit Petit <bpetit@b0rk.in> (https://bpetit.nce.re)
