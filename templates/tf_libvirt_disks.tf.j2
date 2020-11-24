@@ -1,8 +1,11 @@
 {% if iaas_tf_libvirt.disks is defined %}
 {% for disk_name, disk_data in iaas_tf_libvirt.disks.items() %}
 resource "libvirt_volume" "{{ disk_name }}" {
-    name = "{{ disk_name }}"
+    name = "{{ disk_name }}.qcow2"
     source = "{{ disk_data.source }}"
+    pool = libvirt_pool.{{ iaas_tf_libvirt_pool_name }}.name
+    format = "qcow2"
+    depends_on = [libvirt_pool.{{ iaas_tf_libvirt_pool_name }}]
 }
 {% endfor %}
 {% endif %}

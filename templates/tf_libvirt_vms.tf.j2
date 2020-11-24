@@ -7,14 +7,14 @@ resource "libvirt_domain" "{{ vm_name }}" {
     {% if vm_data.disks is defined %}
     {% for disk in vm_data.disks %}
     disk {
-        volume_id = "${libvirt_volume.{{ disk }}.id}"
+        file = libvirt_volume.{{ disk }}.id
     }
     {% endfor %}
     {% endif %}
     {% if vm_data.network_interfaces is defined %}
     {% for netif in vm_data.network_interfaces %}
     network_interface {
-        network_id = "${libvirt_network.{{ netif.network_name }}.id}"
+        network_id = libvirt_network.{{ netif.network_name }}.id
         hostname = "{{ netif.hostname | default(vm_name) }}"
         addresses = [
         {% if netif.addresses is defined %}

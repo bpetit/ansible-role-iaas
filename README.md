@@ -37,7 +37,8 @@ BSD
 Todo
 ----
 
-- automate terraform init and providers installation
+- automate terraform init and providers installation [x]
+- fix `<driver name='qemu' type='raw'/>` to `<driver name='qemu' type='qcow2'/>` when base image is qcow2
 
 Author Information
 ------------------

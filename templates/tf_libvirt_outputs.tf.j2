@@ -1,0 +1,5 @@
+{% for vm_name, vm_data in iaas_tf_libvirt.vms.items() %}
+output "instance_ip_addr" {
+    value = libvirt_domain.{{ vm_name }}.network_interface.0.addresses
+}
+{% endfor %}

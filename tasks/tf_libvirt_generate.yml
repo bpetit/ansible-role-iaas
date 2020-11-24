@@ -11,6 +11,7 @@
     src: "{{ item }}.j2"
     dest: "{{ iaas_tf_dir }}/libvirt/{{ item }}"
   with_items:
+    - tf_libvirt_pool.tf
     - tf_libvirt_variables.tf
     - tf_libvirt_vms.tf
     - tf_libvirt_outputs.tf

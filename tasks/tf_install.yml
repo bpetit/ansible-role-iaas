@@ -1,14 +1,20 @@
 - name: get the required terraform version
   get_url:
-    url: "https://releases.hashicorp.com/terraform/{{ iaas_tf_version | default('0.12.24') }}/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
-    dest: "/tmp/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
+    url: "https://releases.hashicorp.com/terraform/{{ iaas_tf_version | default('0.13.5') }}/terraform_{{ iaas_tf_version | default('0.13.5') }}_linux_amd64.zip"
+    dest: "/tmp/terraform_{{ iaas_tf_version | default('0.13.5') }}_linux_amd64.zip"
 
 - name: unarchive
   unarchive:
-    src: "/tmp/terraform_{{ iaas_tf_version | default('0.12.24') }}_linux_amd64.zip"
+    src: "/tmp/terraform_{{ iaas_tf_version | default('0.13.5') }}_linux_amd64.zip"
     dest: "/tmp/"
 
 - name: install
   copy:
     src: "/tmp/terraform"
     dest: "{{ ansible_tf_install_dir | default('/usr/local/bin') }}/terraform"
+    mode: "0755"
+
+    #- name: set terraform version as a fact
+    #  set_fact:
+    #    terraform_version: "{{ item }}"
+    #  with_lines: terraform --version | awk '{print $2}' | tr -d -'v'

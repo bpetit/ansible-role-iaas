@@ -6,14 +6,14 @@
 - name: Libvirt provider tarball url is found
   set_fact:
     tarball_name: "{{ item }}"
-  with_lines: grep 'Ubuntu_18.04.amd64.tar' /tmp/libvirt_provider.sha256 | awk '{ print $2 }'
+  with_lines: grep 'Ubuntu_20.04.amd64.tar' /tmp/libvirt_provider.sha256 | awk '{ print $2 }'
 
 - name: Libvirt provider tarball is downloaded
   get_url:
     url: "{{ iaas_tf_libvirt_provider_url }}v{{ iaas_tf_libvirt_provider_version }}/{{ tarball_name }}"
     dest: /tmp/libvirt_provider.tar.gz
     checksum: "{{ item }}"
-  with_lines: echo "sha256:"$(grep 'Ubuntu_18.04.amd64.tar' /tmp/libvirt_provider.sha256 | awk '{ print $1 }')
+  with_lines: echo "sha256:"$(grep 'Ubuntu_20.04.amd64.tar' /tmp/libvirt_provider.sha256 | awk '{ print $1 }')
 
 - name: Libvirt provider tarball is extracted
   unarchive:
@@ -30,3 +30,20 @@
     src: /tmp/terraform-provider-libvirt
     dest: "~/.terraform.d/plugins/terraform-provider-libvirt_v{{ iaas_tf_libvirt_provider_version }}"
     mode: '0755'
+
+- name: ensure libvirt provider folder is present
+  file:
+    state: directory
+    path: "~/.terraform.d/plugins/registry.terraform.io/dmacvicar/libvirt/{{ iaas_tf_libvirt_provider_version }}/linux_amd64"
+    recurse: true
+
+- name: copy provider in its folder
+  copy:
+    src: "/tmp/terraform-provider-libvirt"
+    dest: "~/.terraform.d/plugins/registry.terraform.io/dmacvicar/libvirt/{{ iaas_tf_libvirt_provider_version }}/linux_amd64/"
+    mode: '0755'
+
+    #- name: ensure terraform finds local providers by setting a terraformrc
+    #  template:
+    #    src: "terraformrc.j2"  
+    #    dest: "~/.terraformrc"

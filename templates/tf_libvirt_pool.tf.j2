@@ -1,0 +1,5 @@
+resource "libvirt_pool" "{{ iaas_tf_libvirt_pool_name }}" {
+  name = "{{ iaas_tf_libvirt_pool_name }}"
+  type = "dir"
+  path = "{{ iaas_tf_libvirt_pool_path }}"
+}
